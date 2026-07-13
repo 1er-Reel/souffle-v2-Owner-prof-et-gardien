@@ -29,6 +29,15 @@
         </div>
     </div>
     
+    <!-- Carte Caisse Solidarité (NOUVEAU) -->
+    <div class="card card-solidarite">
+        <div class="card-icon">❤️</div>
+        <div class="card-content">
+            <p class="card-label">CAISSE SOLIDARITÉ</p>
+            <p class="card-value">{{ "%.0f"|format(caisse_solidarite) }} XOF</p>
+        </div>
+    </div>
+    
     <!-- Bouton RETIRER ARGENT -->
     <div class="button-container">
         <button class="btn btn-retrait" onclick="openRetraitModal()">
@@ -61,6 +70,7 @@
                 <select id="motif" name="motif" required>
                     <option value="maison">🏠 Besoins de la maison</option>
                     <option value="reinvestir">📚 Réinvestir dans le business</option>
+                    <option value="soins_gardien">🏥 Soins Santé Gardien</option>
                 </select>
             </div>
             
