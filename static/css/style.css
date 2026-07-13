@@ -13,6 +13,7 @@
     --success: #28a745;
     --warning: #ffc107;
     --danger: #dc3545;
+    --solidarite: #e74c3c;
     --border-radius: 12px;
 }
 
@@ -111,6 +112,10 @@ body {
 
 .card-success .card-value {
     color: var(--success);
+}
+
+.card-solidarite .card-value {
+    color: var(--solidarite);
 }
 
 /* ===== BUTTONS ===== */
