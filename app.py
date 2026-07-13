@@ -28,10 +28,14 @@ def dashboard():
     # Argent retirable
     argent_retirable = calculate_argent_retirable(db)
     
+    # Caisse Solidarité (NOUVEAU)
+    caisse_solidarite = calculate_caisse_solidarite(db)
+    
     return render_template('dashboard.html', 
                          benefice_jour=benefice_jour,
                          benefice_mois=benefice_mois,
-                         argent_retirable=argent_retirable)
+                         argent_retirable=argent_retirable,
+                         caisse_solidarite=caisse_solidarite)
 
 # ===== ROUTES VENTES =====
 @app.route('/vente', methods=['GET'])
@@ -115,6 +119,32 @@ def enregistrer_retrait():
         db.rollback()
         return jsonify({'success': False, 'message': str(e)}), 500
 
+# ===== ROUTES SOLIDARITÉ (NOUVEAU) =====
+@app.route('/api/solidarite', methods=['POST'])
+def enregistrer_solidarite():
+    """API pour enregistrer une action de solidarité"""
+    data = request.json
+    db = get_db()
+    cursor = db.cursor()
+    
+    try:
+        montant = float(data.get('montant'))
+        motif = data.get('motif', 'aide')
+        
+        # Enregistrer dans la caisse solidarité
+        cursor.execute('''
+            INSERT INTO solidarite (date, motif, montant)
+            VALUES (?, ?, ?)
+        ''', (datetime.now().strftime('%Y-%m-%d %H:%M:%S'), motif, montant))
+        
+        db.commit()
+        
+        return jsonify({'success': True, 'message': 'Action solidarité enregistrée avec succès'})
+    
+    except Exception as e:
+        db.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500
+
 # ===== FONCTIONS UTILITAIRES =====
 def calculate_benefice(periode, db):
     """Calcule le bénéfice net selon la période"""
@@ -174,6 +204,15 @@ def calculate_argent_retirable(db):
     argent_retirable = benefice_net - total_retraits
     
     return max(0, argent_retirable)
+
+def calculate_caisse_solidarite(db):
+    """Calcule le total de la caisse solidarité"""
+    cursor = db.cursor()
+    
+    cursor.execute('SELECT COALESCE(SUM(montant), 0) FROM solidarite')
+    total_solidarite = cursor.fetchone()[0]
+    
+    return total_solidarite
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
