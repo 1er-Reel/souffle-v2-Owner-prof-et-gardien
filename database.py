@@ -79,7 +79,18 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             date TIMESTAMP NOT NULL,
             montant REAL NOT NULL,
-            motif TEXT CHECK(motif IN ('maison', 'reinvestir')),
+            motif TEXT CHECK(motif IN ('maison', 'reinvestir', 'soins_gardien')),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    
+    # Table Solidarité (NOUVELLE)
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS solidarite (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            date TIMESTAMP NOT NULL,
+            motif TEXT CHECK(motif IN ('orphelinat', 'aide')),
+            montant REAL NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
