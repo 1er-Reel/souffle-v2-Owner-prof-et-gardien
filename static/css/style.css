@@ -1,0 +1,342 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-blue: #0056b3;
+    --light-blue: #e7f1ff;
+    --white: #ffffff;
+    --dark-text: #333333;
+    --light-text: #666666;
+    --success: #28a745;
+    --warning: #ffc107;
+    --danger: #dc3545;
+    --border-radius: 12px;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--light-blue);
+    color: var(--dark-text);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding-bottom: 100px;
+}
+
+/* ===== HEADER ===== */
+.header {
+    background: linear-gradient(135deg, var(--primary-blue), #0066d9);
+    color: var(--white);
+    padding: 30px 20px;
+    text-align: center;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    box-shadow: 0 4px 6px rgba(0, 86, 179, 0.2);
+}
+
+.header h1 {
+    font-size: 2.5em;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.header .subtitle {
+    font-size: 1.1em;
+    opacity: 0.95;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+    padding: 20px;
+}
+
+/* ===== CARDS ===== */
+.dashboard {
+    display: grid;
+    gap: 15px;
+}
+
+.card {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.card:active {
+    transform: scale(0.98);
+}
+
+.card-icon {
+    font-size: 2.5em;
+    min-width: 60px;
+    text-align: center;
+}
+
+.card-content {
+    flex: 1;
+}
+
+.card-label {
+    font-size: 0.9em;
+    color: var(--light-text);
+    margin-bottom: 5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card-value {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: var(--dark-text);
+}
+
+.card-primary .card-value {
+    color: var(--primary-blue);
+}
+
+.card-secondary .card-value {
+    color: #0099ff;
+}
+
+.card-success .card-value {
+    color: var(--success);
+}
+
+/* ===== BUTTONS ===== */
+.button-container {
+    margin: 15px 0;
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 18px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-blue), #0066d9);
+    color: var(--white);
+}
+
+.btn-primary:active {
+    background: linear-gradient(135deg, #004080, #0052a3);
+}
+
+.btn-secondary {
+    background: #f0f0f0;
+    color: var(--dark-text);
+    border: 2px solid #ddd;
+}
+
+.btn-secondary:active {
+    background: #e0e0e0;
+}
+
+.btn-retrait {
+    background: linear-gradient(135deg, var(--success), #20a835);
+    color: var(--white);
+    font-size: 1.3em;
+    padding: 20px;
+}
+
+.btn-retrait:active {
+    background: linear-gradient(135deg, #1f7e2f, #1a6a28);
+}
+
+.btn-large {
+    padding: 20px;
+    font-size: 1.2em;
+}
+
+/* ===== FORMS ===== */
+.vente-page {
+    background: var(--white);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.vente-page h2 {
+    margin-bottom: 20px;
+    color: var(--primary-blue);
+    font-size: 1.5em;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--dark-text);
+    font-size: 1em;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1em;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+}
+
+/* ===== INFO BOX ===== */
+.info-box {
+    background: var(--light-blue);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--primary-blue);
+}
+
+.info-box p {
+    font-size: 1.1em;
+    color: var(--dark-text);
+}
+
+#total {
+    font-weight: bold;
+    color: var(--primary-blue);
+}
+
+/* ===== MODAL ===== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background-color: var(--white);
+    margin: 50px auto;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    max-width: 500px;
+    position: relative;
+    animation: slideDown 0.3s;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    color: var(--primary-blue);
+}
+
+.close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 2em;
+    cursor: pointer;
+    color: var(--light-text);
+}
+
+.close:hover {
+    color: var(--dark-text);
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--white);
+    display: flex;
+    justify-content: space-around;
+    border-top: 2px solid #ddd;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nav-btn {
+    flex: 1;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--light-text);
+    font-size: 1em;
+    font-weight: 600;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.nav-btn.active {
+    color: var(--primary-blue);
+    border-bottom: 3px solid var(--primary-blue);
+}
+
+.nav-btn:active {
+    background: var(--light-blue);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 2em;
+    }
+    
+    .btn {
+        font-size: 1.1em;
+        padding: 16px;
+    }
+    
+    .card {
+        flex-direction: column;
+        text-align: center;
+    }
+}

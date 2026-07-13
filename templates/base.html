@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Souffle V2.0 - Gestion des Ventes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>💙 SOUFFLE</h1>
+            <p class="subtitle">Gestion des Ventes et Finances</p>
+        </header>
+        
+        <main class="main-content">
+            {% block content %}{% endblock %}
+        </main>
+        
+        <nav class="navbar">
+            <a href="/" class="nav-btn {% if request.path == '/' %}active{% endif %}">
+                📊 Dashboard
+            </a>
+            <a href="/vente" class="nav-btn {% if request.path == '/vente' %}active{% endif %}">
+                💰 Vente
+            </a>
+        </nav>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

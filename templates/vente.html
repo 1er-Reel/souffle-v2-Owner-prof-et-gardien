@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="vente-page">
+    <h2>➕ ENREGISTRER UNE VENTE</h2>
+    
+    <form id="venteForm" class="form-vente">
+        <div class="form-group">
+            <label for="produit">Sélectionner un produit</label>
+            <select id="produit" name="produit_id" required onchange="updatePrix()">
+                <option value="">-- Choisir un produit --</option>
+                {% for produit in produits %}
+                <option value="{{ produit[0] }}" data-prix="{{ produit[2] }}" data-stock="{{ produit[3] }}">
+                    {{ produit[1] }} - {{ produit[3] }} en stock
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="quantite">Quantité vendue</label>
+            <input type="number" id="quantite" name="quantite" required min="1" placeholder="Ex: 5">
+        </div>
+        
+        <div class="form-group">
+            <label for="prix_vente">Prix de vente unitaire (XOF)</label>
+            <input type="number" id="prix_vente" name="prix_vente" readonly>
+        </div>
+        
+        <div class="form-group">
+            <label for="type_paiement">Mode de paiement</label>
+            <select id="type_paiement" name="type_paiement" required>
+                <option value="cash">💵 Comptant (Cash)</option>
+                <option value="credit">📋 Crédit</option>
+            </select>
+        </div>
+        
+        <div class="info-box">
+            <p><strong>Total de la vente:</strong> <span id="total">0</span> XOF</p>
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-large">
+            ✅ CONFIRMER LA VENTE
+        </button>
+        
+        <a href="/" class="btn btn-secondary btn-large">
+            ← Retour
+        </a>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function updatePrix() {
+    const select = document.getElementById('produit');
+    const option = select.options[select.selectedIndex];
+    const prix = option.dataset.prix || 0;
+    document.getElementById('prix_vente').value = prix;
+    calculateTotal();
+}
+
+function calculateTotal() {
+    const quantite = parseFloat(document.getElementById('quantite').value) || 0;
+    const prix = parseFloat(document.getElementById('prix_vente').value) || 0;
+    const total = quantite * prix;
+    document.getElementById('total').textContent = Math.round(total).toLocaleString('fr-FR');
+}
+
+document.getElementById('quantite').addEventListener('input', calculateTotal);
+
+document.getElementById('venteForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const produit_id = document.getElementById('produit').value;
+    const quantite = parseInt(document.getElementById('quantite').value);
+    const type_paiement = document.getElementById('type_paiement').value;
+    
+    if (!produit_id || quantite <= 0) {
+        alert('❌ Veuillez remplir tous les champs correctement');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/vente', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                produit_id,
+                quantite,
+                type_paiement
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            alert('✅ Vente enregistrée avec succès!');
+            document.getElementById('venteForm').reset();
+            document.getElementById('prix_vente').value = '';
+            document.getElementById('total').textContent = '0';
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1000);
+        } else {
+            alert('❌ Erreur: ' + data.message);
+        }
+    } catch (error) {
+        alert('❌ Erreur: ' + error.message);
+    }
+});
+</script>
+{% endblock %}

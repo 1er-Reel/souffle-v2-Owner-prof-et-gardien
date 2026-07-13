@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard">
+    <!-- Carte Bénéfice du Jour -->
+    <div class="card card-primary">
+        <div class="card-icon">📅</div>
+        <div class="card-content">
+            <p class="card-label">BÉNÉFICE DU JOUR</p>
+            <p class="card-value">{{ "%.0f"|format(benefice_jour) }} XOF</p>
+        </div>
+    </div>
+    
+    <!-- Carte Bénéfice du Mois -->
+    <div class="card card-secondary">
+        <div class="card-icon">📈</div>
+        <div class="card-content">
+            <p class="card-label">BÉNÉFICE DU MOIS</p>
+            <p class="card-value">{{ "%.0f"|format(benefice_mois) }} XOF</p>
+        </div>
+    </div>
+    
+    <!-- Carte Argent Retirable -->
+    <div class="card card-success">
+        <div class="card-icon">🏦</div>
+        <div class="card-content">
+            <p class="card-label">ARGENT RETIRABLE</p>
+            <p class="card-value">{{ "%.0f"|format(argent_retirable) }} XOF</p>
+        </div>
+    </div>
+    
+    <!-- Bouton RETIRER ARGENT -->
+    <div class="button-container">
+        <button class="btn btn-retrait" onclick="openRetraitModal()">
+            💸 RETIRER DE L'ARGENT
+        </button>
+    </div>
+    
+    <!-- Bouton Enregistrer Vente -->
+    <div class="button-container">
+        <a href="/vente" class="btn btn-primary">
+            ➕ ENREGISTRER UNE VENTE
+        </a>
+    </div>
+</div>
+
+<!-- Modal Retrait -->
+<div id="retraitModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeRetraitModal()">&times;</span>
+        <h2>💸 RETIRER DE L'ARGENT</h2>
+        
+        <form id="retraitForm">
+            <div class="form-group">
+                <label for="montant">Montant à retirer (XOF)</label>
+                <input type="number" id="montant" name="montant" required min="0" step="100" placeholder="Ex: 5000">
+            </div>
+            
+            <div class="form-group">
+                <label for="motif">Motif du retrait</label>
+                <select id="motif" name="motif" required>
+                    <option value="maison">🏠 Besoins de la maison</option>
+                    <option value="reinvestir">📚 Réinvestir dans le business</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-large">Confirmer Retrait</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+function openRetraitModal() {
+    document.getElementById('retraitModal').style.display = 'block';
+}
+
+function closeRetraitModal() {
+    document.getElementById('retraitModal').style.display = 'none';
+}
+
+document.getElementById('retraitForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const montant = parseFloat(document.getElementById('montant').value);
+    const motif = document.getElementById('motif').value;
+    
+    try {
+        const response = await fetch('/api/retrait', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ montant, motif })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            alert('✅ Retrait effectué avec succès!');
+            closeRetraitModal();
+            location.reload();
+        } else {
+            alert('❌ Erreur: ' + data.message);
+        }
+    } catch (error) {
+        alert('❌ Erreur: ' + error.message);
+    }
+});
+
+// Fermer le modal au clic en dehors
+window.onclick = function(event) {
+    const modal = document.getElementById('retraitModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+}
+</script>
+{% endblock %}
